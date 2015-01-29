@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Map My Major</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <!-- <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" /> -->
+	<script src="js/jquery-ui.min.js"></script> 
+    <!-- <script type="text/javascript" src="js/interact.min.js"></script> -->
+    <script type="text/javascript" src="js/determine.js"></script> 
+    <script type="text/javascript" src="js/drag.js"></script>
+    <link href="css/style.css" rel="stylesheet">
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+  	<div class="outer-container">
+	  	<div id="inner-container">
+	  		
+	  		<div class="header">
+	  			<img src="img/bu-cs-header.png" width="960px">
+	  		</div>
+
+	  		<div id="main">
+			  	<div id="leftcol">
+			  		
+			  		<div id="title-container">
+			  			<div id="main-title">Map My Major</div>
+			  			<hr>
+			  			<!-- <span id="main-subtitle">Computer Science<br>Boston University</span> -->
+			  			<div id="button-bar">
+			  				<button id="button-print" type="button" onclick="window.print();">Print</button>
+			  				<button id="button-save" type="button" onclick="saveSchedule()">Save</button>
+			  				<button id="button-load" type="button" onclick="loadSchedule()">Load</button>
+			  				<button id="button-reset-all" type="button" onclick="resetAll();">Reset All</button>
+			  				Start Yr
+			  				<input type="text" class="spinner" id="spinner-start-year">
+			  			</div>
+			  			<hr>
+
+			  		</div>
+
+			  		<div id="schedule-container">
+			  			<div id="semester-0-container">
+			  				<table>
+			  					<tr>
+			  						<td class="semester-row-title">
+			  							<!-- Previously<br>Taken<br>Courses -->
+			  							Transfer<br>Credits
+			  						</td>
+			  						<td class="semester" id="semester-0" data-semester="0">
+			  							<div class="semester-inner"></div></td>		
+			  					</tr>
+			  				</table>
+			  			</div>
+					  	<table id="schedule">
+					  		<tr class="schedule-heading">
+					  			<td></td>
+					  			<td>Fall</td>
+					  			<td>Spring</td>
+					  			<td>Summer</td>
+					  		</tr>
+					  		<!-- <tr class="schedule-content-row">
+					  			<td class="semester-row-title">Y1</td>
+					  			<td class="semester semester-fall" id="semester-1" data-semester="1">
+					  				<div class="semester-inner"></div></td>
+					  			<td class="semester semester-spring" id="semester-2" data-semester="2">
+					  				<div class="semester-inner"></div></td>
+					  			<td class="semester semester-summer" id="semester-3" data-semester="3">
+					  				<div class="semester-inner"></div></td>
+					  		</tr>-->
+						</table>
+					</div>
+
+					<div id="add-remove-year-container">
+						<button id="add-year" onclick="generateYear()" type="button">Add Year</button>
+						<button id="remove-year" onclick="removeYear()" type="button">Remove Year</button>
+					</div>
+
+					<div id="report-container">
+						<div id="report-header">
+							Report
+						</div>
+						<ul id="report-list">
+							
+						</ul>
+					</div>
+
+
+				</div> <!-- end left col -->
+
+				<div id="rightcol">
+					<!-- <div id="directions">
+						<p>Add courses to your schedule.</p>
+						<p>Your schedule must include all courses from group A, at least 2 courses from group B and C each, and you must take 15 courses in total.</p>
+					</div> -->
+					<div id="info-container">
+						<div id="info-title">
+						</div>
+						<div id="info-descrip">
+						</div>
+						<div id="info-prereq-container">
+							Prerequistes: <span id='info-prereq'><span>
+						</div>
+						<div id="info-coreq-container">
+							Corequistes: <span id='info-coreq'><span>
+						</div>
+					</div> <!-- end info-container -->
+					<div id="classbank-container">
+						<div class="bankcol" id="bankcol-left">
+							<div class="bank" id="bank-A">
+								<div class="bank-header">
+									<div class="bankname">
+										Group A
+									</div>
+									<div class="score-container">
+										<span class='score' id="score-A"><span class='tally' id="tally-A">0</span>/5</span>
+									</div>
+									<button id="reset-A" type="button" onclick="resetGroup('A')">Reset</button>
+								</div>
+								<div class="bank-content">
+								</div>
+							</div>
+
+							<div class="bank" id="total-container">
+								<div class="bankname">
+									Total
+								</div>
+								<div class="score-container">
+									<span class='score' id="score-total"><span class='tally' id="tally-total"></span>/<span class="tally-denom"></span></span>
+								</div>
+							</div>
+						</div>
+
+						<div class="bankcol" id="bankcol-middle">
+							<div class="bank" id="bank-B">
+								<div class="bank-header">
+									<div class="bankname">
+										Group B
+									</div>
+									<div class="score-container">
+										<span class='score' id="score-B"><span class='tally' id="tally-B">0</span>/2</span>
+									</div>
+									<button id="reset-B" type="button" onclick="resetGroup('B')">Reset</button>
+								</div>
+								<div class="bank-content">
+								</div>
+							</div>
+
+							<div class="bank" id="bank-C">
+								<div class="bank-header">
+									<div class="bankname">
+											Group C
+									</div>
+									<div class="score-container">
+										<span class='score' id="score-C"><span class='tally' id="tally-C">0</span>/2</span>
+									</div>
+									<button id="reset-C" type="button" onclick="resetGroup('C')">Reset</button>
+								</div>
+								<div class="bank-content">
+								</div>
+							</div>
+						</div>
+
+						<div class="bankcol" id="bankcol-right">
+							<div class="bank" id="bank-D">
+								<div class="bank-header">
+									<div class="bankname">
+										Group D
+									</div>
+									<div class="score-container">
+									<span class='score' id="score-D"><span class='tally' id="tally-D">0</span>/<span class="tally-denom" id="need-D"></span></span>
+								</div>
+									<button id="reset-D" type="button" onclick="resetGroup('D')">Reset</button>
+								</div>
+								<div class="bank-content" id="group-D">
+								</div>
+							</div>
+						</div>
+					</div>  <!-- end classbank-container -->
+				
+				</div> <!-- end right col -->
+
+
+
+			</div> <!-- end main -->
+		</div> <!-- end container -->			
+		
+		
+		<div class="footercontainer">
+			<div class="footer">
+				<img src="img/bu-cs-footer.png" width="960px">
+			</div>
+		</div>
+
+		</div> <!-- end outer container -->
+
+  </body>
+</html>

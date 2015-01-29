@@ -1,0 +1,641 @@
+/***************************/
+/****** VARIABLES ****/
+/***************************/
+
+
+:root {
+	--bad: #F18D8D;
+	--good: #99EA91;
+}
+
+/***************************/
+/****** SITE CONTAINERS ****/
+/***************************/
+
+body {
+	margin-top:0px;
+	margin-left:0px;
+}
+
+div.outer-container {
+	background: #595455;
+	margin-bottom:20px
+}
+
+#inner-container {
+	width:960px;
+	/*min-height: 1100px;*/
+	margin:0 auto;
+	padding-top:26px;
+}
+
+div.header {
+}
+
+#main {
+	font-family: sans-serif;
+	padding:26px;
+	background: #FFF;
+	margin-top:24px;
+	min-height:800px;
+	/*width:960px;*/
+}
+
+/*****  FOOTER ****/
+
+div.footercontainer {
+	margin-top:20px;
+	width:100%;
+	background: #FFF;
+}
+
+div.footer {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width:960px;
+}
+
+
+/***************************/
+/*******  LEFT COLUMN ******/
+/***************************/
+
+#leftcol {
+	/*border: 1px dashed red;*/
+	width:54%;
+	float:left;
+}
+
+/****** TITLE ***********/
+
+#title-container {
+	width:100%;
+	/*border: 1px dashed green;	*/
+	margin-bottom:20px;
+	margin-top:10px;
+	text-indent: 130px;
+	/*height:100px;*/
+}
+
+#main-title {
+	margin-bottom:20px;
+	font-size: 26px;
+	font-weight: bold;
+}
+
+#main-subtitle {
+	font-size: 20px;
+
+}
+
+/****** BUTTON BAR *****/
+
+#button-bar {
+	height:22px;
+	text-align:left;
+	text-indent: 0px;
+	/*margin: 10px;*/
+}
+
+#button-bar button, #add-remove-year-container button {
+	font-size: 16px;
+	/*float:right;*/
+	/*min-width:100px;	*/
+	padding:3px 10px;
+	/*margin:0px 5px;*/
+}
+
+#button-print{
+	margin-right:20px;
+}
+
+#button-load{
+	margin-right:20px;
+}
+
+/*#button-load, #button-save {
+	disabled:true;
+}*/
+
+#button-reset-all {
+	margin-right:10px;
+}
+
+#button-bar .spinner {
+	height: 20px;
+	font-size:14px;
+	width:60px;
+}
+
+/****** SCHEDULE *****/
+
+#schedule-container {
+
+}
+
+#schedule {
+	border-spacing: 0px;
+	border:1px solid transparent;
+	border-radius:10px;
+
+}
+
+#schedule.-drop-possible .semester {
+	/*background-color:red;*/
+	/*border:1px solid red;*/
+}
+
+#schedule.-drop-possible {
+	/*background-color:red;*/
+	/*border:1px solid blue;*/
+}
+
+td.semester-row-title {
+	/*font-weight:bold;*/
+	text-align:right;
+	vertical-align: middle;
+	padding-right:5px;
+	width: 35px;
+	/*border:1px dashed black;*/
+	/*padding-right:-20px;*/
+}
+
+.year-count-container {
+	font-weight:bold;
+}
+
+.year-name {
+	font-style: italic;
+	font-size: 12px;
+}
+
+.schedule-content-row {
+	height:104px;
+}
+
+tr.schedule-heading {
+	font-weight:bold;
+	text-align:center;
+	/*border: 1px dashed black;*/
+}
+
+tr.schedule-heading td {
+	max-width:50px;
+	border-top:0px;
+}
+
+.semester {
+	border:1px solid gray;
+	border-radius: 3px;
+	/*background-color: #F6F6F6;;*/
+	/*height:50px;*/
+}
+
+#semester-0-container {
+	margin: 0px 0px 10px 0px;
+}
+
+#semester-0-container .heading {
+	font-weight:bold;
+	width: 100px;
+}
+
+#semester-0-container .semester{
+	width:400px;
+	height:50px;
+	/*float:left;*/
+}
+
+#semester-0-container .semester-inner {
+	height: 44px;
+	width:380px;
+}
+
+.semester-fall, .semester-spring {
+	width:176px;
+}
+
+.semester-summer {
+	width:88px;
+}
+
+.semester-inner {
+	/*border: 1px dashed orange;*/
+	margin:0 auto;
+	height:90px;
+	border-radius:5px;
+}
+
+
+.semester-fall .semester-inner, .semester-spring .semester-inner{
+	width:167px;
+}
+
+.semester-summer .semester-inner {
+	width:80px;
+
+}
+
+.semester:hover {
+	/*border: 1px dashed black;*/
+	-moz-box-shadow: 0 0 5px #888888;
+	-webkit-box-shadow: 0 0 5px #888888;
+	box-shadow: 0px 0px 5px #888888;
+}
+
+.semester.-drop-possible {
+	/*border:5px solid black;*/
+}
+
+.semester.-drop-over {
+	/*background-color:#87EBFF;*/
+	/*border: 1px dashed black;*/
+	-moz-box-shadow: 0 0 5px #888888;
+	-webkit-box-shadow: 0 0 5px #888888;
+	box-shadow: 0px 0px 5px #888888;
+}
+
+.semester.-drop-over .semester-inner {
+	border: 1px dashed gray;
+}
+
+/*.semester-inner.-drop-over{
+	border: 1px dashed gray;
+}*/
+
+
+/***** REPORT *****/
+
+#report-container {
+	margin: 10px 0px 0px 40px;
+}
+
+#report-header {
+	font-weight:bold;
+	/*text-align: center;*/
+	text-indent: 50px;
+}
+
+#report-list {
+
+}
+
+li.report {
+
+}
+
+
+
+/***************************/
+/******* RIGHT COLUMN ******/
+/***************************/
+
+#rightcol {
+	/*border: 1px dashed blue;*/
+	width:43%;
+	min-height:800px;
+	float:right;
+}
+
+
+/******** DIRECTIONS *******/
+
+#directions {
+	margin:0px;
+	padding:0px;
+	width:97%;
+	height:120px;
+	/*border: 1px dashed red;*/
+}
+
+
+/****** CLASS BANK *****/
+.bankcol {
+	float:left;
+}
+
+#classbank-container {
+	/*border:1px solid green;*/
+}
+
+#classbank {
+	/*margin:20px;*/
+	/*padding:20px;*/
+	border-spacing:20px;
+}
+
+.bank {
+	/*height:180px;*/
+	/*width:180px;*/
+	width:120px;
+	margin: 0px 15px 15px 0px;
+	/*max-width:190px;*/
+	/*border-width: 3px;*/
+	/*border-style: solid;*/
+	/*border-color:black;*/
+	border-color:#545454;
+	border-radius:5px;
+}
+
+#bank-D {
+	margin-right:0px;
+}
+
+.bank:hover {
+	-moz-box-shadow: 0 0 5px #888888;
+	-webkit-box-shadow: 0 0 5px #888888;
+	box-shadow: 0px 0px 5px #888888;
+}
+
+.bank.-satisfied {
+	border-color: green;
+	background-color:#CFE8D2;
+}
+
+.bank.-unsatisfied {
+	background-color:#EDD5D5;
+}
+
+.bank-border {
+	/*border:3px solid transparent;*/
+	/*border-color:transparent;*/
+	border-radius: 10px;
+}
+
+.bank.-satisfied .score-container{
+	color: green;
+}
+
+.bank.-unsatisfied .score-container{
+	color: red;
+}
+
+#total-container {
+	height:43px;
+	padding-top:22px;
+}
+
+
+/****** BANK HEADER *****/
+
+.bank-header {
+	/*border:1px dashed black;*/
+	height:50px;
+	padding-top:10px;
+}
+
+.bankname, .score-container {
+	/*border:1px dashed black;*/
+	/*height:20px;*/
+	/*width: 100px;*/
+	/*margin-right:20px;*/
+	/*vertical-align: text-bottom;*/
+	/*text-indent: 20px;*/
+
+}
+
+.bankname {
+	padding-top:3px;
+	text-indent: 30px;
+	/*border:1px dashed green;*/
+	width:100px;
+	float:left;
+	margin:0px 0px 3px 0px;
+	font-weight: bold;
+}
+
+.score-container {
+	/*height:20px;*/
+	/*border:1px dashed orange;*/
+	width:40px;
+	float:left;
+	font-weight:bold;
+	font-size: 20px;
+	letter-spacing: 2px;
+	margin-left:25px;
+}
+
+.tally-denom {
+	letter-spacing:0px;
+}
+
+#tally-total {
+	letter-spacing:0px;
+	margin-right:3px;
+}
+
+td.class {
+	/*border:2px solid red;*/
+	/*padding-top:5px;*/
+	/*margin-top:10px;*/
+	/*width:90px;*/
+	/*height:20px;*/
+	/*background-color:#FFBD00;*/
+	/*border:1px dashed gray;*/
+}
+
+#total-container .bankname {
+	text-indent:20px;
+	width: 65px;
+}
+
+#total-container .score-container {
+	margin:0px;	
+}
+
+/****** RESET BUTTON *****/
+
+.bank-header button {
+	/*position:relative;*/
+	/*top:5px;*/
+	float:none;
+	padding:4px 4px;
+	/*margin-left: 20px;*/
+}
+
+
+/****** CLASS OBJECTS *****/
+
+div.bank-content {
+	padding:0px 0px 10px 19px;
+}
+
+div.class {
+	/*border:3px solid red;*/
+	border: 3px solid #CCC;
+	width:70px;
+	/*width:80px;*/
+	height:25px;
+	/*background-color:#FFBD00;*/
+	border-radius: 5px;
+	padding:3px;
+	text-align: center;
+	vertical-align: middle;	
+	padding-top:10px;
+	/*position: relative;*/
+	margin: 0px 0px 10px 0px;
+}
+
+#bank-D .class select {
+	width:52px;
+	/*margin-left:15px;*/
+}
+
+.draggable:hover {
+	cursor: move;
+}
+
+#bank-A .draggable {
+	background-color:#FFBD00;
+}
+
+#bank-A .draggable:hover {
+	background-color:#ebae00;
+}
+
+#bank-B .draggable {
+	background-color:#3b9eff;
+}
+
+#bank-B .draggable:hover {
+	background-color:#0080FF;
+
+}
+
+#bank-C .draggable {
+	background-color:#C959CD;
+}
+
+#bank-C .draggable:hover {
+	background-color:#b036b5;
+}
+
+#bank-D .draggable {
+	background-color: #20bebd;
+}
+
+#bank-D .draggable:hover {
+	background-color: #1a9c9b;
+}
+
+
+c.checkbox {
+	/*height:30	px;*/
+}
+
+/****** CLASS INFO ******/
+
+#info-container {
+	/*border: 1px dashed orange;*/
+	float:left;
+	width:370px;
+	height:110px;
+	padding:10px;
+	background-color: #F6F6F6;
+	border-radius:5px;
+	margin: 0px 0px 15px 0px;
+}
+
+#info-container:hover {
+	/*border: 1px dashed black;*/
+	-moz-box-shadow: 0 0 5px #888888;
+	-webkit-box-shadow: 0 0 5px #888888;
+	box-shadow: 0px 0px 5px #888888;
+}
+
+#info-title {
+	font-weight: bold;
+	font-size:18px;
+	margin-bottom:5px;
+}
+
+#info-descrip {
+	margin-bottom:5px;
+}
+
+#info-descrip ul {
+	margin:0px;
+	padding-left:25px;
+}
+
+#info-prereq-container {
+
+}
+
+#info-prereq {
+
+}
+
+#info-container li {
+	margin-top:4px;
+}
+
+#info-descrip .emphasis {
+	font-weight:bold;
+	border-bottom-style: solid;
+	border-width:2px;
+}
+
+#info-descrip .group-A {
+	border-color:#FFBD00;
+}
+
+#info-descrip .group-B {
+	border-color:#3b9eff;
+}
+
+#info-descrip .group-C {
+	border-color:#C959CD;
+}
+
+#info-descrip .total {
+	border-color:gray;
+}
+
+/**************************************/
+
+#add-remove-year-container {
+	margin: 5px 0px 0px 0px;
+	float:right;
+}
+
+#add-remove-year-container button {
+	height: 23px;
+	padding:2px 10px;
+	/*margin-right:10px;*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
