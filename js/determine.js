@@ -690,16 +690,13 @@ function initUploadForm() {
 }
 
 function downloadSched() {
-	var formData = new FormData();
-	// formData.append("file", "hello, world!");
-	
-
 	saveSchedule();
 	var sched = JSON.stringify(savedSchedule);
-
-	// console.log(formData);
-	// console.log(sched);
+	var formData = new FormData();
 	formData.append("file", sched);
+	
+	var r = Math.floor(Math.random() * 100000);
+	formData.append("name", r);
 
 	$.ajax({
 		type: "POST",
@@ -710,7 +707,7 @@ function downloadSched() {
 		success: function (res) {
 			console.log("downloadSched ajax success");
 			console.log(res);
-			window.location = 'php/download.php';
+			window.location = 'php/download.php?name=' + r;
 		}
 	});
 }

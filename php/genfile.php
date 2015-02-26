@@ -1,6 +1,7 @@
 <?php
     $contents = $_POST["file"];
-    $file = fopen("downloads/myschedule.json", "w");
+    $name = $_POST["name"];
+    $file = fopen("downloads/$name.json", "w");
     fwrite($file, $contents);
     fclose($file);
 ?>
