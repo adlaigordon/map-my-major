@@ -30,18 +30,18 @@ var genericDIndex;
 
 function initCatalogue() {
 	$.ajax({
-    	async: false,
-    	url:"data/settings.json",
-    	success: function (result) {
-    		totalNeeded = result.totalNeeded;
-    		courseGroups = result.courseGroups;
-    		defaultInfoTitle = result.defaultInfoTitle;
-    		defaultInfoDescrip = result.defaultInfoDescrip;
-    		genericDNum = result.genericDNum;
-    		genericDTitle = result.genericDTitle;
-    		genericDDescrip = result.genericDDescrip;
-    		defaultNumYears = result.defaultNumYears;
-	    }
+		async: false,
+		url:"data/settings.json",
+		success: function (result) {
+			totalNeeded = result.totalNeeded;
+			courseGroups = result.courseGroups;
+			defaultInfoTitle = result.defaultInfoTitle;
+			defaultInfoDescrip = result.defaultInfoDescrip;
+			genericDNum = result.genericDNum;
+			genericDTitle = result.genericDTitle;
+			genericDDescrip = result.genericDDescrip;
+			defaultNumYears = result.defaultNumYears;
+		}
 	});
 	
 	// Generic D
@@ -50,23 +50,23 @@ function initCatalogue() {
 	genericDIndex = catalogue.length-1;
 
 	$.ajax({
-    	async: false,
-    	url:"data/catalogue.json",
-    	success: function (result) {
-    		for (var i = 0; i < result.length; i++) {
-    			if (result[i].show == "true") {
-    				newEntry = new CatalogueEntry(
+		async: false,
+		url:"data/catalogue.json",
+		success: function (result) {
+			for (var i = 0; i < result.length; i++) {
+				if (result[i].show == "true") {
+					newEntry = new CatalogueEntry(
 							result[i].courseNum,
 							result[i].courseTitle,
 							result[i].courseGroup,
 							result[i].track,
 							result[i].courseDescrip
 						);
-	    			catalogue.push(newEntry);
-	    		}
-    		};
+					catalogue.push(newEntry);
+				}
+			};
 
-	    }
+		}
 	});
 }
 
@@ -103,16 +103,16 @@ function initCatalogue_default() {
 	// Generate list of all numbers from 400-599
 	var groupDList = [];
 	for (var i = 0; i < 10; i++) {
-        for (var j = 0; j < 10; j++) {
-    		groupDList.push("4" + i + j);
-    		// groupDList.push("5" + i + j);
-        }
+		for (var j = 0; j < 10; j++) {
+			groupDList.push("4" + i + j);
+			// groupDList.push("5" + i + j);
+		}
 	}
 	for (var i = 0; i < 10; i++) {
-        for (var j = 0; j < 10; j++) {
-    		// groupDList.push("4" + i + j);
-    		groupDList.push("5" + i + j);
-        }
+		for (var j = 0; j < 10; j++) {
+			// groupDList.push("4" + i + j);
+			groupDList.push("5" + i + j);
+		}
 	}
 
 	for (var i in groupDList) {
@@ -190,11 +190,12 @@ function moreInfoLinkText(courseNum) {
  */
 var schedule;
 
-function ScheduleEntry(catalogueIndex, isTaking, semester) {
+function ScheduleEntry(catalogueIndex, isTaking, semester, position) {
 	this.catalogueIndex = catalogueIndex;
 	this.isTaking = typeof isTaking !== 'undefined' ? isTaking: false;;
 	this.semester = typeof semester !== 'undefined' ? semester: "-1";
 	this.uniqueClassID = getUniqueClassID();
+	this.position = typeof position !== 'undefined' ? position: {};
 
 	this.getCourseNum = function() {
 		return catalogue[this.catalogueIndex].courseNum;
@@ -206,7 +207,7 @@ function ScheduleEntry(catalogueIndex, isTaking, semester) {
 		return catalogue[this.catalogueIndex].courseGroup;
 	}
 
-	this.position = {};
+	
 }
 
 /* Unique ID's for ScheduleEntry objectss
@@ -217,6 +218,10 @@ var uniqueClassIDCounter;
 
 function getUniqueClassID() {
 	return uniqueClassIDCounter++;
+}
+
+function resetUniqueClassID() {
+	uniqueClassIDCounter = 0;
 }
 
 /* Eventually should read from XML document */
@@ -436,9 +441,9 @@ function resetGroup(groupName) {
 }
 
 $(document).mousedown(function(e) {
-    if ($(e.target).closest('.draggable, #info-container').length === 0) {
-        selectClass(-1);
-    }
+	if ($(e.target).closest('.draggable, #info-container').length === 0) {
+		selectClass(-1);
+	}
 });
 
 $(".draggable").mouseenter(function () {
@@ -576,6 +581,7 @@ function saveSchedule() {
 }
 
 function loadSchedule() {
+	resetUniqueClassID();
 	var f = savedSchedule;
 	console.log(yearCount);
 	console.log(f.yearCount);
@@ -585,7 +591,13 @@ function loadSchedule() {
 	while (yearCount > f.yearCount) {
 		removeYear();
 	}
-	schedule = f.schedule;
+
+	schedule = [];
+	for (var i = 0; i < f.schedule.length; i++) {
+		var s = f.schedule[i];
+		schedule.push(new ScheduleEntry(s.catalogueIndex, s.isTaking, s.semester, s.position));
+	};
+
 	for (var i = 0; i < schedule.length; i++) {
 		// $("#" + schedule[i].uniqueClassID).css("left", schedule[i].position["left"]);
 		// $("#" + schedule[i].uniqueClassID).css("top", schedule[i].position["top"]);
@@ -607,6 +619,101 @@ function loadSchedule() {
 	updateMap();
 }
 
+function initUploadForm() {
+	var form = document.getElementById('upload-form');
+	var userfile = document.getElementById('userfile');
+	var uploadButton = document.getElementById('upload-button');
+
+	form.onsubmit = function(event) {
+		console.log("form onsubmit init");
+		event.preventDefault();
+
+		// Update button text.
+		uploadButton.innerHTML = 'Uploading...';
+		// $("#upload-button").value("Uploading...2");
+
+		// Get the selected files from the input.
+		var files = userfile.files;
+
+		// console.log("files:");
+		// console.log(files);
+
+		// Create a new FormData object.
+		var formData = new FormData();
+
+		// Loop through each of the selected files.
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+
+			// // Check the file type.
+			// if (!file.type.match('image.*')) {
+			// 	continue;
+		 //  }
+
+			// Add the file to the request.
+			formData.append('userfile', file, file.name);
+		}
+
+		// console.log(formData);
+		if (formData) {
+		  $.ajax({
+			url: "php/upload.php",
+			type: "POST",
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function (res) {
+				
+			  // document.getElementById("response").innerHTML = res; 
+			  // $("#upload-response").html();
+			  // console.log("success");
+			  // console.log(res);
+				$("#upload-form")[0].reset();
+				// console.log(res);	
+				// console.log("---");
+				var newsched = JSON.parse(res);
+				// console.log(newsched.defaultInfoTitle);
+				// console.log(res.totalNeeded);
+				// console.log("---");
+
+				// ONCE IT'S REAL
+				console.log("UPLOAD SUCCESS");
+				console.log(newsched);
+				savedSchedule = newsched;
+				loadSchedule();
+			}
+		  });
+		}
+
+		
+	}
+}
+
+function downloadSched() {
+	var formData = new FormData();
+	// formData.append("file", "hello, world!");
+	
+
+	saveSchedule();
+	var sched = JSON.stringify(savedSchedule);
+
+	// console.log(formData);
+	// console.log(sched);
+	formData.append("file", sched);
+
+	$.ajax({
+		type: "POST",
+		url: "php/genfile.php",
+		data: formData,
+		processData: false,
+		contentType: false,
+		success: function (res) {
+			console.log("downloadSched ajax success");
+			console.log(res);
+			window.location = 'php/download.php';
+		}
+	});
+}
 
 function check(event) {
 	// console.log("check called");
@@ -634,6 +741,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 	styleMap();
 	resetAll();
 	selectClass(-1);
+	initUploadForm();
 });
 
 

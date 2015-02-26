@@ -46,6 +46,14 @@
 			  				<button id="button-reset-all" type="button" onclick="resetAll();">Reset All</button>
 			  				Start Yr
 			  				<input type="text" class="spinner" id="spinner-start-year">
+			  				<form id="upload-form" action="php/upload.php" method="post" enctype="multipart/form-data">
+						    	Upload Schedule
+							    <input type="file" name="userfile" id="userfile">
+							    <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
+							    <input type="submit" id="upload-button" value="Upload File" name="submit">
+							</form>
+							<div id="upload-response"></div>
+							<button id="button-download" type="button" onclick="downloadSched();">Download Schedule</button>
 			  			</div>
 			  			<hr>
 

@@ -92,7 +92,8 @@ div.footer {
 /****** BUTTON BAR *****/
 
 #button-bar {
-	height:22px;
+	/*height:22px;*/
+	height:90px;
 	text-align:left;
 	text-indent: 0px;
 	/*margin: 10px;*/
@@ -103,7 +104,11 @@ div.footer {
 	/*float:right;*/
 	/*min-width:100px;	*/
 	padding:3px 10px;
-	/*margin:0px 5px;*/
+	margin-bottom:15px;
+}
+
+#button-download {
+	margin-top:10px;
 }
 
 #button-print{
