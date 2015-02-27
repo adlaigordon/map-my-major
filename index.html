@@ -36,24 +36,33 @@
 			  	<div id="leftcol">
 			  		
 			  		<div id="title-container">
-			  			<div id="main-title">Map My Major</div>
+			  			<div id="main-title">Map My Major <span id="main-subtitle">beta</span></div>
 			  			<hr>
 			  			<!-- <span id="main-subtitle">Computer Science<br>Boston University</span> -->
 			  			<div id="button-bar">
-			  				<button id="button-print" type="button" onclick="window.print();">Print</button>
-			  				<button id="button-save" type="button" onclick="saveSchedule()">Save</button>
-			  				<button id="button-load" type="button" onclick="loadSchedule()">Load</button>
-			  				<button id="button-reset-all" type="button" onclick="resetAll();">Reset All</button>
-			  				Start Yr
+			  				<!-- <button id="button-print" type="button" onclick="window.print();">Print</button> -->
+			  				<!-- <button id="button-save" type="button" onclick="saveSchedule()">Save</button> -->
+			  				<!-- <button id="button-load" type="button" onclick="loadSchedule()">Load</button> -->
+			  				<button id="button-download" type="button" onclick="downloadSched();">Save Schedule</button>
+			  				Start Year:
 			  				<input type="text" class="spinner" id="spinner-start-year">
+			  				<button id="button-reset-all" type="button" onclick="resetAll();">Reset All</button>
+			  				<hr>
 			  				<form id="upload-form" action="php/upload.php" method="post" enctype="multipart/form-data">
-						    	Upload Schedule
+						    	Open Saved Schedule<br>
 							    <input type="file" name="userfile" id="userfile">
 							    <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
-							    <input type="submit" id="upload-button" value="Upload File" name="submit">
+							    <input type="submit" id="upload-button" value="Upload" name="submit">
 							</form>
 							<div id="upload-response"></div>
-							<button id="button-download" type="button" onclick="downloadSched();">Download Schedule</button>
+							<br>
+							<!-- <hr> -->
+							Open Schedule From URL<br>
+							<form id="load-from-url-form" action="php/loadfromurl.php">
+								<input type="text" name="url" id="load-from-url-text" placeholder="Paste URL Here and Click 'Open'">
+								<input type="submit" id="load-from-url-button" value="Open">
+							</form>
+
 			  			</div>
 			  			<hr>
 
@@ -96,14 +105,14 @@
 						<button id="remove-year" onclick="removeYear()" type="button">Remove Year</button>
 					</div>
 
-					<div id="report-container">
+<!-- 					<div id="report-container">
 						<div id="report-header">
 							Report
 						</div>
 						<ul id="report-list">
 							
 						</ul>
-					</div>
+					</div> -->
 
 
 				</div> <!-- end left col -->

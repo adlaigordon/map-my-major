@@ -393,13 +393,15 @@ function updateMap() {
 		total.classList.remove('-unsatisfied');
 	}
 
-	// Print Report
-	report_html = "";
-	for (var i = 0; i < report.length; i++) {
-		report_html += "<li>" + report[i] + "</li>";
-	};
+	return;
 
-	document.getElementById("report-list").innerHTML = report_html;
+	// // Print Report
+	// report_html = "";
+	// for (var i = 0; i < report.length; i++) {
+	// 	report_html += "<li>" + report[i] + "</li>";
+	// };
+
+	// document.getElementById("report-list").innerHTML = report_html;
 }
 
 function resetAll() {
@@ -627,30 +629,17 @@ function initUploadForm() {
 	form.onsubmit = function(event) {
 		console.log("form onsubmit init");
 		event.preventDefault();
-
-		// Update button text.
-		uploadButton.innerHTML = 'Uploading...';
-		// $("#upload-button").value("Uploading...2");
-
 		// Get the selected files from the input.
 		var files = userfile.files;
-
-		// console.log("files:");
-		// console.log(files);
-
 		// Create a new FormData object.
 		var formData = new FormData();
-
 		// Loop through each of the selected files.
 		for (var i = 0; i < files.length; i++) {
 			var file = files[i];
-
 			// // Check the file type.
 			// if (!file.type.match('image.*')) {
 			// 	continue;
 		 //  }
-
-			// Add the file to the request.
 			formData.append('userfile', file, file.name);
 		}
 
@@ -663,20 +652,8 @@ function initUploadForm() {
 			processData: false,
 			contentType: false,
 			success: function (res) {
-				
-			  // document.getElementById("response").innerHTML = res; 
-			  // $("#upload-response").html();
-			  // console.log("success");
-			  // console.log(res);
 				$("#upload-form")[0].reset();
-				// console.log(res);	
-				// console.log("---");
 				var newsched = JSON.parse(res);
-				// console.log(newsched.defaultInfoTitle);
-				// console.log(res.totalNeeded);
-				// console.log("---");
-
-				// ONCE IT'S REAL
 				console.log("UPLOAD SUCCESS");
 				console.log(newsched);
 				savedSchedule = newsched;
@@ -684,9 +661,40 @@ function initUploadForm() {
 			}
 		  });
 		}
-
-		
 	}
+}
+
+function initURLLoadForm() {
+	var form = document.getElementById('load-from-url-form');
+	var uploadButton = document.getElementById('load-from-url-button');
+
+	form.onsubmit = function(event) {
+		event.preventDefault();
+		// console.log("url load init");
+		var url = $("#load-from-url-text").val();
+		var formData = new FormData();
+		formData.append("url", url);
+
+		if (formData) {
+		  $.ajax({
+			url: "php/loadfromurl.php",
+			type: "POST",
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function (res) {
+				// console.log(res);
+				$("#load-from-url-form")[0].reset();
+				var newsched = JSON.parse(res);
+				console.log("UPLOAD SUCCESS");
+				console.log(newsched);
+				savedSchedule = newsched;
+				loadSchedule();
+			}
+		  });
+		}
+	}
+
 }
 
 function downloadSched() {
@@ -739,6 +747,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 	resetAll();
 	selectClass(-1);
 	initUploadForm();
+	initURLLoadForm();
 });
 
 
