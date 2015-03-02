@@ -335,6 +335,12 @@ li.report {
 	/*border: 1px dashed red;*/
 }
 
+/****** MAIN HEADERS *****/
+#classbank-main-header, #schedule-main-header{
+	text-align: center;
+	font-weight: bold;
+	margin-bottom:10px;
+}
 
 /****** CLASS BANK *****/
 .bankcol {
@@ -503,6 +509,18 @@ div.class {
 	margin: 0px 0px 10px 0px;
 }
 
+div.class.invalid {
+	/*border-color:red;*/
+	border:3px solid red;
+	/*margin:100px;*/
+}
+
+div.class.valid {
+	/*border-color:red;*/
+	border:3px solid green;
+	/*margin:100px;*/
+}
+
 #bank-D .class select {
 	width:52px;
 	/*margin-left:15px;*/
@@ -556,7 +574,7 @@ c.checkbox {
 	/*border: 1px dashed orange;*/
 	float:left;
 	width:370px;
-	height:110px;
+	height:130px;
 	padding:10px;
 	background-color: #F6F6F6;
 	border-radius:5px;
@@ -589,8 +607,14 @@ c.checkbox {
 
 }
 
-#info-prereq {
+#info-prereq-list span.invalid, #info-coreq-list span.invalid{
+	font-weight:bold;
+	color:red;
+}
 
+#info-prereq-list span.valid, #info-coreq-list span.valid{
+	/*font-weight:bold;*/
+	color:green;
 }
 
 #info-container li {

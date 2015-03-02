@@ -3,14 +3,16 @@
  */
 var catalogue;
 
-function CatalogueEntry(courseNum, courseTitle, courseGroup, track, courseDescrip) {
+function CatalogueEntry(courseNum, courseTitle, courseGroup, track, courseDescrip, prereqList, coreqList) {
 	this.courseNum = courseNum;
 	this.courseTitle = courseTitle;
 	this.courseGroup = courseGroup ? courseGroup : "D";
 	this.track = track ? track : "Other";
 	this.courseDescrip = (typeof courseDescrip == 'undefined' || courseDescrip == null) ? "": courseDescrip + "<br>";
-	this.prereqList = new Array();
-	this.coreqList = new Array();
+	this.prereqList = (typeof prereqList == 'undefined' || prereqList == null) ? new Array(): prereqList;
+	this.coreqList = (typeof coreqList == 'undefined' || coreqList == null) ? new Array(): coreqList;
+	// this.prereqList = new Array();
+	// this.coreqList = new Array();
 };
 
 /* Integer of number of total courses needed for valid schedule
@@ -60,7 +62,9 @@ function initCatalogue() {
 							result[i].courseTitle,
 							result[i].courseGroup,
 							result[i].track,
-							result[i].courseDescrip
+							result[i].courseDescrip,
+							result[i].prereqList,
+							result[i].coreqList
 						);
 					catalogue.push(newEntry);
 				}
@@ -273,6 +277,7 @@ function initMap(groupName) {
 }
 
 function styleMap() {
+	$("#semester-0-container td.semester").css("background-color", "#F6F6F6");
 	$("#schedule tr.schedule-content-row:even td.semester").css("background-color", "#F6F6F6");
 	setYearNames();
 }
@@ -311,6 +316,11 @@ function updateSchedule(uniqueClassID, isTaking, semester) {
 
 	updateMap();
 }
+
+/* Global state of missing requirements
+ * Recreated at each updateMap(), accessed by updateInfo()
+ */
+var missingRequirements;
 
 function updateMap() {
 	// Generate blank tally with 0's for each group
@@ -393,8 +403,72 @@ function updateMap() {
 		total.classList.remove('-unsatisfied');
 	}
 
-	return;
+	// Check Prereqs & Coreqs
+	missingRequirements = {};
+	for (var i = 0; i < schedule.length; i++) {
+		if (schedule[i].semester >= 0) {
+			missingRequirements[schedule[i].getCourseNum()] = {"semester":schedule[i].semester,
+															  "prereqList":catalogue[schedule[i].catalogueIndex].prereqList,
+															  "coreqList":catalogue[schedule[i].catalogueIndex].coreqList };
+		}
+	};
+	$.each(missingRequirements, function (course, info) {
+		// Prerequistes
+		var missing = new Array();
+		$.each(info.prereqList, function (i, prereq) {
+			if (typeof missingRequirements[prereq] == 'undefined') {
+				missing.push(prereq);
+			} else {
+				if (missingRequirements[prereq].semester >= info.semester) {
+					missing.push(prereq);
+				}
+			}
+		});
+		info["missingPrereqList"] = missing;
 
+		// Corequisites
+		var missing = new Array();
+		$.each(info.coreqList, function (i, coreq) {
+			if (typeof missingRequirements[coreq] == 'undefined') {
+				missing.push(coreq);
+				// console.log("   " + coreq + " is missing for " + course)
+			} else {
+				if (missingRequirements[coreq].semester > info.semester) {
+					missing.push(coreq);
+				}
+			}
+		});
+		info["missingCoreqList"] = missing;
+	});
+
+	$.each(schedule, function (i, s) {
+		$("#" + s.uniqueClassID).removeClass("invalid");
+		$("#" + s.uniqueClassID).removeClass("valid");
+		var n = s.getCourseNum();
+		var valid = true;
+		if (n in missingRequirements) {
+			if (missingRequirements[n].missingPrereqList.length > 0 || missingRequirements[n].missingCoreqList.length > 0) {
+				$("#" + s.uniqueClassID).addClass("invalid");
+				valid = false;
+			}
+		}
+		if (valid && s.semester >= 0) {
+			$("#" + s.uniqueClassID).addClass("valid");
+		}
+	});
+
+
+	if (lastSelected) {
+		updateInfo(lastSelected);
+	}
+
+	console.log("in updateMap():");
+	console.log(missingRequirements);
+
+	
+
+
+	return;
 	// // Print Report
 	// report_html = "";
 	// for (var i = 0; i < report.length; i++) {
@@ -479,7 +553,7 @@ function updateInfo(uid) {
 		$("#info-title").hide().html(defaultInfoTitle).fadeIn("fast");
 		// $("#info-descrip").html("<p>" + defaultInfoDescrip + "</p>");
 		$("#info-descrip").hide().html(defaultInfoDescrip).fadeIn("fast");
-		$("#info-prereq, #info-coreq").empty();
+		$("#info-prereq-list, #info-coreq-list").empty();
 		$("#info-prereq-container, #info-coreq-container").hide();
 	} else {
 		var i = schedule[uid].catalogueIndex;
@@ -492,24 +566,63 @@ function updateInfo(uid) {
 		$("#info-descrip").hide().html(descrip).fadeIn("fast");
 		$("#info-prereq-container, #info-coreq-container").hide().fadeIn("fast");
 
-		var prereq;
+		var courseNum = schedule[uid].getCourseNum();
+		// console.log("in updateInfo(): uid = " + uid + ", courseNum = " + courseNum);
 		if (catalogue[i].prereqList.length > 0) {
-			prereq = catalogue[i].prereqList.join(", ");
-			$("#info-prereq").html(prereq);
+			var prereq = "";
+			$.each(catalogue[i].prereqList, function (i, p) {
+				if (schedule[uid].semester < 0) {
+					prereq += "<span>";
+				} else if (courseNum in missingRequirements && missingRequirements[courseNum].missingPrereqList.indexOf(p) >= 0) {
+					prereq += "<span class='invalid'>";
+				} else {
+					prereq += "<span class='valid'>";
+				}
+				prereq += "CS" + p + "</span>; ";
+			});
+			$("#info-prereq-list").html(prereq);
 		} else {
-			$("#info-prereq").empty();
+			$("#info-prereq-list").empty();
 			$("#info-prereq-container").hide();
 		}
-		
 
-		var coreq;
 		if (catalogue[i].coreqList.length > 0) {
-			coreq = catalogue[i].coreqList.join(", ");
-			$("#info-coreq").html(coreq);
+			var coreq = "";
+			$.each(catalogue[i].coreqList, function (i, p) {
+				if (schedule[uid].semester < 0) {
+					coreq += "<span>";
+				} else if (courseNum in missingRequirements && missingRequirements[courseNum].missingCoreqList.indexOf(p) >= 0) {
+					coreq += "<span class='invalid'>";
+				} else {
+					coreq += "<span class='valid'>";
+				}
+				coreq += "CS" + p + "</span>; ";
+			});
+			$("#info-coreq-list").html(coreq);
 		} else {
-			$("#info-coreq").empty();
+			$("#info-coreq-list").empty();
 			$("#info-coreq-container").hide();
 		}
+		
+		// var coreq;
+		// if (catalogue[i].coreqList.length > 0) {
+		// 	coreq = catalogue[i].coreqList.join(", ");
+		// 	$("#info-coreq-list").html(coreq);
+		// } else {
+		// 	$("#info-coreq-list").empty();
+		// 	$("#info-coreq-container").hide();
+		// }
+
+
+		/* Create a new obj
+			add all things to it.
+			compare to current info-container
+			if same, ditch
+				else replace obj
+
+
+		*/
+
 		
 	}
 }

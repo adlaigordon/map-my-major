@@ -3,7 +3,7 @@
 	"courseGroups": {"A":5, "B":2, "C":2, "D":0},
 	
 	"defaultInfoTitle": "Add courses to your schedule",
-	"defaultInfoDescrip": "Your schedule must include: <ul><li>All courses from <span class='emphasis group-A'>Group A</span></li><li>At least 2 <em>each</em> from <span class='emphasis group-B'>Group B</span> and <span class='emphasis group-C'>Group C</span></li><li>15 courses in <span class='emphasis total'>Total</span></li></ul>",
+	"defaultInfoDescrip": "Your schedule must include: <ul><li>All courses from <span class='emphasis group-A'>Group A</span></li><li>At least 2 <em>each</em> from <span class='emphasis group-B'>Group B</span> and <span class='emphasis group-C'>Group C</span></li><li>15 courses in <span class='emphasis total'>Total</span></li></ul><br>Select a course below to see more information.",
 	
 	"genericDNum": "4xx",
 	"genericDTitle": "Default Group D Course",
