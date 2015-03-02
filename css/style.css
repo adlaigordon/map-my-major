@@ -90,20 +90,20 @@ div.footer {
 	color:gray;
 }
 
-/****** BUTTON BAR *****/
+/****** BUTTON BAR & HIDDEN MENUS *****/
 
-#button-bar {
+#button-bar-container {
 	/*border:1px solid green;*/
 	/*height:22px;*/
-	height:140px;
+	/*height:180px;*/
 	text-align:left;
 	text-indent: 0px;
 	/*margin-top:0px;*/
 	/*margin: 10px;*/
 }
 
-#button-bar button, #add-remove-year-container button, #load-from-url-button{
-	font-size: 16px;
+#button-bar-container button, #add-remove-year-container button, #load-from-url-button{
+	font-size: 14px;
 	/*float:right;*/
 	/*min-width:100px;	*/
 	padding:3px 10px;
@@ -119,39 +119,82 @@ div.footer {
 	width:330px;
 }
 
-#button-download {
-	/*margin-top:10px;*/
-}
+/*#button-download {
+	margin-top:10px;
+}*/
 
-#button-download{
+/*#button-download{
 	margin-right:20px;
-}
+}*/
 
 /*#spinner-start-year {
 	margin-right:50px;
 }*/
 
-#button-print{
+/*#button-print{
 	margin-right:20px;
 }
 
 #button-load{
 	margin-right:20px;
-}
+}*/
 
 /*#button-load, #button-save {
 	disabled:true;
 }*/
 
 #button-reset-all {
-	margin-left:30px;
-	margin-right:10px;
+	margin-left:40px;
+	/*margin-right:10px;*/
 }
 
-#button-bar .spinner {
+#button-bar-1, #button-bar-2 {
+	margin-left:20px;
+}
+
+#button-bar-1 button {
+	margin-right:20px;
+}
+
+#button-bar-2 .spinner {
+	/*margin:0px;*/
+	/*padding:0px;*/
 	height: 20px;
 	font-size:14px;
 	width:60px;
+}
+
+#hidden-menu-container {
+	height:27px;
+	margin:12px 0px 0px 20px;
+
+}
+
+#hidden-menu-container div {
+	/*margin-top:15px;*/
+}
+
+#name-container {
+	margin-right:20px;
+}
+
+#name-text {
+	width:210px;
+}
+
+#name-missing-error {
+	color:red;
+}
+
+/****** SCHEDULE MAIN HEADER *****/
+
+/*#schedule-header-container {
+	text-align: center;
+	margin-bottom:10px;
+}*/
+
+#schedule-header-text {
+	font-weight: bold;
 }
 
 /****** SCHEDULE *****/
@@ -251,6 +294,7 @@ tr.schedule-heading td {
 	margin:0 auto;
 	height:90px;
 	border-radius:5px;
+	border:1px dashed transparent;
 }
 
 
@@ -335,14 +379,16 @@ li.report {
 	/*border: 1px dashed red;*/
 }
 
-/****** MAIN HEADERS *****/
-#classbank-main-header, #schedule-main-header{
+/****** CLASSBANK HEADER *****/
+#classbank-main-header{
 	text-align: center;
 	font-weight: bold;
 	margin-bottom:10px;
 }
 
 /****** CLASS BANK *****/
+
+
 .bankcol {
 	float:left;
 }
@@ -574,7 +620,7 @@ c.checkbox {
 	/*border: 1px dashed orange;*/
 	float:left;
 	width:370px;
-	height:130px;
+	height:150px;
 	padding:10px;
 	background-color: #F6F6F6;
 	border-radius:5px;
@@ -591,11 +637,15 @@ c.checkbox {
 #info-title {
 	font-weight: bold;
 	font-size:18px;
-	margin-bottom:5px;
+	margin-bottom:10px;
+}
+
+#info-inner-container {
+	margin-left:10px;
 }
 
 #info-descrip {
-	margin-bottom:5px;
+	margin-bottom:10px;
 }
 
 #info-descrip ul {
@@ -641,6 +691,13 @@ c.checkbox {
 
 #info-descrip .total {
 	border-color:gray;
+}
+
+#info-additional {
+	margin-top:10px;
+	font-style: italic;
+	font-size:12px;
+	color:gray;
 }
 
 /**************************************/

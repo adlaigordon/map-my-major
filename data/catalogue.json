@@ -5,7 +5,7 @@
 {"show":"true","courseNum":330,"courseTitle":"Intro to Analysis of Algorithms","courseGroup":"A","track":"Theory","courseDescrip":null, "prereqList":[112, 131], "coreqList":[132, 235]},
 {"show":"true","courseNum":132,"courseTitle":"Geometric Algorithms","courseGroup":"B","track":"Applications","courseDescrip":null, "prereqList":[111], "coreqList":[]},
 {"show":"true","courseNum":235,"courseTitle":"Algebraic Algorithms","courseGroup":"B","track":"Theory","courseDescrip":null, "prereqList":[], "coreqList":[132]},
-{"show":"true","courseNum":237,"courseTitle":"Probability in Computing","courseGroup":"B","track":"Theory","courseDescrip":"**You are only required to take CS132 OR CS235,<br>both are not needed.**<br>Click the link below for more information.", "prereqList":[131, 132, 235], "coreqList":[]},
+{"show":"true","courseNum":237,"courseTitle":"Probability in Computing","courseGroup":"B","track":"Theory","courseDescrip":"<em>You are only required to take CS132 OR CS235</em>", "prereqList":[131, 132, 235], "coreqList":[]},
 {"show":"true","courseNum":320,"courseTitle":"Concepts of Programming Languages","courseGroup":"C","track":"Software","courseDescrip":null, "prereqList":[112, 131], "coreqList":[210]},
 {"show":"true","courseNum":332,"courseTitle":"Elements of the Theory of Computation","courseGroup":"C","track":"Theory","courseDescrip":null, "prereqList":[330], "coreqList":[]},
 {"show":"true","courseNum":350,"courseTitle":"Fundamentals of Computing Systems","courseGroup":"C","track":"Systems","courseDescrip":null, "prereqList":[210, 237], "coreqList":[]},

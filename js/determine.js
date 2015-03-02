@@ -28,6 +28,8 @@ var genericDNum;
 var genericDTitle;
 var genericDDescrip;
 
+var defaultDCount;
+
 var genericDIndex;
 
 function initCatalogue() {
@@ -42,6 +44,7 @@ function initCatalogue() {
 			genericDNum = result.genericDNum;
 			genericDTitle = result.genericDTitle;
 			genericDDescrip = result.genericDDescrip;
+			defaultDCount = result.defaultDCount;
 			defaultNumYears = result.defaultNumYears;
 		}
 	});
@@ -73,66 +76,6 @@ function initCatalogue() {
 		}
 	});
 }
-
-/*
-function initCatalogue_default() {
-	// Groups A, B, C
-	var coreList = {
-		'A': ['111', '112', '131', '210', '330'],
-		'B': ['132', '235', '237'],
-		'C': ['320', '332', '350'],
-		}
-
-	catalogue = new Array();
-	for (g in coreList) {
-		for (c in coreList[g]) {
-			catalogue.push(
-				new CatalogueEntry(
-					coreList[g][c],
-					"Course_Title_" + coreList[g][c],
-					g,
-					'core',
-					// 'This class is called CS ' + coreList[g][c],
-					[coreList[g][c]-40, coreList[g][c]-30],
-					[coreList[g][c]-20, coreList[g][c]-10]
-					)
-				);
-		}
-	}
-
-	// Generic D
-	catalogue.push(new CatalogueEntry(genericDNum, genericDTitle,'D', "Default", undefined, undefined, "Choose a specific Group D course to learn more."));
-	genericDIndex = catalogue.length-1;
-
-	// Generate list of all numbers from 400-599
-	var groupDList = [];
-	for (var i = 0; i < 10; i++) {
-		for (var j = 0; j < 10; j++) {
-			groupDList.push("4" + i + j);
-			// groupDList.push("5" + i + j);
-		}
-	}
-	for (var i = 0; i < 10; i++) {
-		for (var j = 0; j < 10; j++) {
-			// groupDList.push("4" + i + j);
-			groupDList.push("5" + i + j);
-		}
-	}
-
-	for (var i in groupDList) {
-		catalogue.push(
-			new CatalogueEntry(
-				groupDList[i],
-				"Course_Title_" + groupDList[i],
-				'D',
-				undefined,
-				// 'This class is called ' + groupDList[i],
-				[groupDList[i]-40, groupDList[i]-30],
-				[groupDList[i]-20, groupDList[i]-10]
-			));
-	}
-}
-*/
 
 var _groupDSelectHTML;
 function groupDSelectHTML(uid) {
@@ -178,7 +121,7 @@ function groupDSelect(uid, val) {
 function moreInfoLinkText(courseNum) {
 	
 	return 	"<a href='http://www.bu.edu/academics/cas/courses/cas-cs-" + courseNum + "' target='_blank'>" + 
-			"Description & Current Schedule</a>" +
+			"Full Description & Current Schedule</a>" +
 			"<img src='img/share.png'>";
 	
 }
@@ -239,7 +182,7 @@ function initSchedule() {
 		}
 		
 		if (catalogue[i].courseNum == genericDNum) {
-			for (var j = 0; j < 6; j++) {
+			for (var j = 0; j < defaultDCount; j++) {
 				schedule.push(new ScheduleEntry(i));
 			};
 		}
@@ -316,11 +259,6 @@ function updateSchedule(uniqueClassID, isTaking, semester) {
 
 	updateMap();
 }
-
-/* Global state of missing requirements
- * Recreated at each updateMap(), accessed by updateInfo()
- */
-var missingRequirements;
 
 function updateMap() {
 	// Generate blank tally with 0's for each group
@@ -403,6 +341,27 @@ function updateMap() {
 		total.classList.remove('-unsatisfied');
 	}
 
+	updateMissingRequirements();
+
+	if (lastSelected) {
+		updateInfo(lastSelected);
+	}
+
+	return;
+	// // Print Report
+	// report_html = "";
+	// for (var i = 0; i < report.length; i++) {
+	// 	report_html += "<li>" + report[i] + "</li>";
+	// };
+
+	// document.getElementById("report-list").innerHTML = report_html;
+}
+
+/* Global state of missing requirements
+ * Recreated at each updateMap(), accessed by updateInfo()
+ */
+var missingRequirements;
+function updateMissingRequirements() {
 	// Check Prereqs & Coreqs
 	missingRequirements = {};
 	for (var i = 0; i < schedule.length; i++) {
@@ -415,12 +374,17 @@ function updateMap() {
 	$.each(missingRequirements, function (course, info) {
 		// Prerequistes
 		var missing = new Array();
+		// console.log("-----------\ncalculating missing requirements for " + course);
 		$.each(info.prereqList, function (i, prereq) {
 			if (typeof missingRequirements[prereq] == 'undefined') {
 				missing.push(prereq);
+				// console.log("\ttypeof mr[prereq] is undefined. pushing " + prereq + " to missing.")
 			} else {
-				if (missingRequirements[prereq].semester >= info.semester) {
+				if (Number(missingRequirements[prereq].semester) >= Number(info.semester)) {
 					missing.push(prereq);
+					// console.log("\tmr[prereq].semester (" + missingRequirements[prereq].semester + ") >= info.semester (" + info.semester +"). pushing " + prereq + " to missing.");
+					// console.log("\t\t" + typeof missingRequirements[prereq].semester);
+					// console.log("\t\t" + typeof info.semester);
 				}
 			}
 		});
@@ -433,7 +397,7 @@ function updateMap() {
 				missing.push(coreq);
 				// console.log("   " + coreq + " is missing for " + course)
 			} else {
-				if (missingRequirements[coreq].semester > info.semester) {
+				if (Number(missingRequirements[coreq].semester) > Number(info.semester)) {
 					missing.push(coreq);
 				}
 			}
@@ -452,30 +416,18 @@ function updateMap() {
 				valid = false;
 			}
 		}
-		if (valid && s.semester >= 0) {
+		if (valid && Number(s.semester) >= 0) {
 			$("#" + s.uniqueClassID).addClass("valid");
 		}
 	});
+}
 
-
-	if (lastSelected) {
-		updateInfo(lastSelected);
-	}
-
-	console.log("in updateMap():");
-	console.log(missingRequirements);
-
-	
-
-
-	return;
-	// // Print Report
-	// report_html = "";
-	// for (var i = 0; i < report.length; i++) {
-	// 	report_html += "<li>" + report[i] + "</li>";
-	// };
-
-	// document.getElementById("report-list").innerHTML = report_html;
+function showHiddenMenu(menu) {
+	// if ($("#" + menu).is(":visible")) {
+	// 	return;
+	// }
+	$("#hidden-menu-container div:not(#" + menu + "):visible").slideToggle("fast");
+	$("#" + menu).slideToggle("fast");
 }
 
 function resetAll() {
@@ -520,17 +472,20 @@ $(document).mousedown(function(e) {
 	if ($(e.target).closest('.draggable, #info-container').length === 0) {
 		selectClass(-1);
 	}
+	// if ($(e.target).closest('#download-schedule-container').length === 0) {
+	// 	$("#name-missing-error").css("visibility", "hidden");
+	// }
 });
 
 $(".draggable").mouseenter(function () {
-	console.log("mouseenter:" + this);
+	// console.log("mouseenter:" + this);
 	if (this.id != lastSelected) {
 		updateInfo(this.id);
 	}
 });
 
 $(".draggable").mouseleave(function () {
-	console.log("mouseleave:" + this);
+	// console.log("mouseleave:" + this);
 	if (this.id != lastSelected) {
 		updateInfo(lastSelected);
 	}
@@ -542,33 +497,39 @@ var defaultInfoDescrip;
 var lastSelected;
 function selectClass(uid) {
 	if (uid != lastSelected) {
+		updateMissingRequirements();
 		updateInfo(uid);
 		lastSelected = uid;
 	}
 }
 
 function updateInfo(uid) {
-	console.log(uid + " is selected");
+	// console.log(uid + " is selected");
 	if (uid == -1) {
 		$("#info-title").hide().html(defaultInfoTitle).fadeIn("fast");
 		// $("#info-descrip").html("<p>" + defaultInfoDescrip + "</p>");
 		$("#info-descrip").hide().html(defaultInfoDescrip).fadeIn("fast");
 		$("#info-prereq-list, #info-coreq-list").empty();
-		$("#info-prereq-container, #info-coreq-container").hide();
+		$("#info-prereq-container, #info-coreq-container, #info-additional").hide();
 	} else {
+		// $("#info-prereq-list, #info-coreq-list").empty();
+		// $("#info-prereq-list, #info-coreq-list").hide();
+		$("#info-prereq-container, #info-coreq-container").hide();
+		$("#info-prereq-container, #info-coreq-container").hide();
 		var i = schedule[uid].catalogueIndex;
 		$("#info-title").hide().html("CS " + catalogue[i].courseNum + ": " + catalogue[i].courseTitle + "").fadeIn("fast");
 		// $("#info-descrip").hide().html(catalogue[i].courseDescrip + moreInfoLinkText(catalogue[i].courseNum)).fadeIn("fast");
-		var descrip = catalogue[i].courseDescrip;
+		var descrip = "<em>" + catalogue[i].courseDescrip + "</em>";
 		if (i != genericDIndex) {
 			descrip += moreInfoLinkText(catalogue[i].courseNum);
 		}
 		$("#info-descrip").hide().html(descrip).fadeIn("fast");
-		$("#info-prereq-container, #info-coreq-container").hide().fadeIn("fast");
+		// $("#info-prereq-container, #info-coreq-container").fadeIn("fast");
 
 		var courseNum = schedule[uid].getCourseNum();
 		// console.log("in updateInfo(): uid = " + uid + ", courseNum = " + courseNum);
 		if (catalogue[i].prereqList.length > 0) {
+			$("#info-prereq-container").fadeIn("fast");
 			var prereq = "";
 			$.each(catalogue[i].prereqList, function (i, p) {
 				if (schedule[uid].semester < 0) {
@@ -580,13 +541,14 @@ function updateInfo(uid) {
 				}
 				prereq += "CS" + p + "</span>; ";
 			});
-			$("#info-prereq-list").html(prereq);
+			$("#info-prereq-list").hide().html(prereq).fadeIn("fast");
 		} else {
 			$("#info-prereq-list").empty();
 			$("#info-prereq-container").hide();
 		}
 
 		if (catalogue[i].coreqList.length > 0) {
+			$("#info-coreq-container").fadeIn("fast");
 			var coreq = "";
 			$.each(catalogue[i].coreqList, function (i, p) {
 				if (schedule[uid].semester < 0) {
@@ -598,11 +560,13 @@ function updateInfo(uid) {
 				}
 				coreq += "CS" + p + "</span>; ";
 			});
-			$("#info-coreq-list").html(coreq);
+			$("#info-coreq-list").hide().html(coreq).fadeIn("fast");
 		} else {
 			$("#info-coreq-list").empty();
 			$("#info-coreq-container").hide();
 		}
+
+		$("#info-additional").hide().html("(Be sure to check the official course page or ask the professor for the most accurate requisites.)").fadeIn("fast");
 		
 		// var coreq;
 		// if (catalogue[i].coreqList.length > 0) {
@@ -690,6 +654,7 @@ function saveSchedule() {
 	f['yearCount'] = yearCount;
 	f['schedule'] = schedule;
 	f['startYear'] = $("#spinner-start-year").val();
+	f['nameText'] = $("#name-text").val();
 
 	savedSchedule = f;
 	// return f;
@@ -698,8 +663,8 @@ function saveSchedule() {
 function loadSchedule() {
 	resetUniqueClassID();
 	var f = savedSchedule;
-	console.log(yearCount);
-	console.log(f.yearCount);
+	// console.log(yearCount);
+	// console.log(f.yearCount);
 	while (yearCount < f.yearCount) {
 		generateYear();
 	}
@@ -729,6 +694,7 @@ function loadSchedule() {
 	};
 
 	$("#spinner-start-year").val(f.startYear);
+	$("#name-text").val(f.nameText);
 	setYearNames();
 
 	updateMap();
@@ -740,7 +706,7 @@ function initUploadForm() {
 	var uploadButton = document.getElementById('upload-button');
 
 	form.onsubmit = function(event) {
-		console.log("form onsubmit init");
+		// console.log("form onsubmit init");
 		event.preventDefault();
 		// Get the selected files from the input.
 		var files = userfile.files;
@@ -767,10 +733,11 @@ function initUploadForm() {
 			success: function (res) {
 				$("#upload-form")[0].reset();
 				var newsched = JSON.parse(res);
-				console.log("UPLOAD SUCCESS");
-				console.log(newsched);
+				// console.log("UPLOAD SUCCESS");
+				// console.log(newsched);
 				savedSchedule = newsched;
 				loadSchedule();
+				showHiddenMenu();
 			}
 		  });
 		}
@@ -799,10 +766,11 @@ function initURLLoadForm() {
 				// console.log(res);
 				$("#load-from-url-form")[0].reset();
 				var newsched = JSON.parse(res);
-				console.log("UPLOAD SUCCESS");
-				console.log(newsched);
+				// console.log("UPLOAD SUCCESS");
+				// console.log(newsched);
 				savedSchedule = newsched;
 				loadSchedule();
+				showHiddenMenu();
 			}
 		  });
 		}
@@ -811,13 +779,25 @@ function initURLLoadForm() {
 }
 
 function downloadSched() {
+	var name = $("#name-text").val();
+	name = name.replace(/[^\w\s]/gi, '')
+	name = name.trim();
+	name = name.replace(/\s{2,}/g, ' ');
+	name = name.replace(/ /g,"_");
+
+	if (name.length < 1) {
+		$("#name-missing-error").css("visibility", "visible")
+		return;
+	}
+
+	$("#name-missing-error").css("visibility", "hidden");
 	saveSchedule();
 	var sched = JSON.stringify(savedSchedule);
 	var formData = new FormData();
 	formData.append("file", sched);
 	
 	var r = Math.floor(Math.random() * 100000);
-	formData.append("name", r);
+	formData.append("rand", r);
 
 	$.ajax({
 		type: "POST",
@@ -826,9 +806,9 @@ function downloadSched() {
 		processData: false,
 		contentType: false,
 		success: function (res) {
-			console.log("downloadSched ajax success");
-			console.log(res);
-			window.location = 'php/download.php?name=' + r;
+			// console.log("downloadSched ajax success");
+			// console.log(res);
+			window.location = 'php/download.php?rand=' + r + '&name=' + name;
 		}
 	});
 }

@@ -37,37 +37,52 @@
 			  		
 			  		<div id="title-container">
 			  			<div id="main-title">Map My Major <span id="main-subtitle">beta</span></div>
-			  			<hr>
 			  			<!-- <span id="main-subtitle">Computer Science<br>Boston University</span> -->
-			  			<div id="button-bar">
-			  				<!-- <button id="button-print" type="button" onclick="window.print();">Print</button> -->
-			  				<!-- <button id="button-save" type="button" onclick="saveSchedule()">Save</button> -->
-			  				<!-- <button id="button-load" type="button" onclick="loadSchedule()">Load</button> -->
-			  				<button id="button-download" type="button" onclick="downloadSched();">Save Schedule</button>
-			  				Start Year:
-			  				<input type="text" class="spinner" id="spinner-start-year">
-			  				<button id="button-reset-all" type="button" onclick="resetAll();">Reset All</button>
+			  			
+			  			<div id="button-bar-container">
 			  				<hr>
-			  				<form id="upload-form" action="php/upload.php" method="post" enctype="multipart/form-data">
-						    	Open Saved Schedule<br>
-							    <input type="file" name="userfile" id="userfile">
-							    <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
-							    <input type="submit" id="upload-button" value="Upload" name="submit">
-							</form>
-							<div id="upload-response"></div>
-							<br>
-							<!-- <hr> -->
-							Open Schedule From URL<br>
-							<form id="load-from-url-form" action="php/loadfromurl.php">
-								<input type="text" name="url" id="load-from-url-text" placeholder="Paste URL Here and Click 'Open'">
-								<input type="submit" id="load-from-url-button" value="Open">
-							</form>
-
-			  			</div>
-			  			<hr>
+				  			<div id="button-bar-1">
+				  				<!-- <button id="button-print" type="button" onclick="window.print();">Print</button> -->
+				  				<!-- <button id="button-save" type="button" onclick="saveSchedule()">Save</button> -->
+				  				<!-- <button id="button-load" type="button" onclick="loadSchedule()">Load</button> -->
+				  				<button id="button-download" type="button" onclick="showHiddenMenu('download-schedule-container');">Save Course Plan </button>
+				  				<button id="show-upload" type="button" onclick = "showHiddenMenu('upload-form-container');">Upload Plan</button>
+				  				<button id="show-url-load" type="button" onclick="showHiddenMenu('url-load-container');">Load From URL</button>
+			  				</div>
+			  				<div id="hidden-menu-container">
+			  					<div id="download-schedule-container" style="display: none;">
+			  						<span id="name-container">
+				  						<input type="text" name="name" id="name-text" placeholder="Please enter your name or BU ID" maxlength="45">
+				  						<span id="name-missing-error" style="visibility:hidden">*</span>
+				  					</span>
+			  						<button id="button-download" type="button" onclick="downloadSched();">Download</button>
+			  					</div>
+				  				<div id="upload-form-container" style="display: none;">
+					  				<form id="upload-form" action="php/upload.php" method="post" enctype="multipart/form-data">
+								    	<!-- Open Saved Plan<br> -->
+									    <input type="file" name="userfile" id="userfile">
+									    <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
+									    <input type="submit" id="upload-button" value="Upload" name="submit">
+									</form>
+									<div id="upload-response"></div>
+								</div>
+								<div id="url-load-container" style="display: none;">
+									<form id="load-from-url-form" action="php/loadfromurl.php">
+										<input type="text" name="url" id="load-from-url-text" placeholder="Paste URL Here and Click 'Open'">
+										<input type="submit" id="load-from-url-button" value="Open">
+									</form>
+								</div>
+							</div>
+				  			<hr>
+				  			<div id="button-bar-2">
+								<span id="schedule-header-text">Your Course Plan:</span>
+								Starting
+				  				<input type="text" class="spinner" id="spinner-start-year">
+				  				<button id="button-reset-all" type="button" onclick="resetAll();">Reset All</button>
+				  			</div>
+				  		</div>
 
 			  		</div>
-			  		<div id="schedule-main-header">&mdash;Your Schedule&mdash;</div>
 			  		<div id="schedule-container">
 			  			<div id="semester-0-container">
 			  				<table>
@@ -112,7 +127,7 @@
 						<ul id="report-list">
 							
 						</ul>
-					</div> -->
+					</div> -->	
 
 
 				</div> <!-- end left col -->
@@ -125,13 +140,17 @@
 					<div id="info-container">
 						<div id="info-title">
 						</div>
-						<div id="info-descrip">
-						</div>
-						<div id="info-prereq-container">
-							Prerequistes: <span id='info-prereq-list'><span>
-						</div>
-						<div id="info-coreq-container">
-							Corequistes: <span id='info-coreq-list'><span>
+						<div id="info-inner-container">
+							<div id="info-descrip">
+							</div>
+							<div id="info-prereq-container">
+								Prerequistes: <span id='info-prereq-list'><span>
+							</div>
+							<div id="info-coreq-container">
+								Corequistes: <span id='info-coreq-list'><span>
+							</div>
+							<div id="info-additional">
+							</div>
 						</div>
 					</div> <!-- end info-container -->
 					<div id="classbank-main-header">&mdash;Available Courses&mdash;</div>
